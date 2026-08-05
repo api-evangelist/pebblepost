@@ -1,0 +1,93 @@
+generated: '2026-08-04'
+method: searched
+source: https://www.pebblepost.com/privacy-policy/
+# Standards and regulatory posture. Nothing here is derived from an OpenAPI — PebblePost
+# publishes none — so every `conforms: true` is backed by a quoted, fetched claim on
+# PebblePost's own pages, and everything unevidenced is recorded as unknown, not false.
+standards:
+- id: soc2
+  conforms: true
+  evidence: 'Privacy policy, Security section: "PebblePost maintains and has placed
+    controls within its Services that upholds commitments and system requirements for
+    SOC 2 compliance." Links to the AICPA SOC suite overview, not to a report.'
+  source: https://www.pebblepost.com/privacy-policy/
+  caveat: A self-published compliance claim. No report, certificate number, audit
+    period or auditor is named publicly; the Vanta trust center that would carry them
+    is not anonymously readable.
+- id: ccpa-cpra
+  conforms: true
+  evidence: 'Dedicated CCPA FAQ article plus a US state-privacy-law table in the
+    privacy policy naming California CCPA (2018, effective 2020-01-01) and the Colorado,
+    Connecticut, Delaware, Utah and Virginia acts, with Right to Delete and
+    Do-Not-Sell-or-Share mechanisms.'
+  source: https://docs.pebblepost.com/article/48-pebblepost-ccpa-faqs
+- id: us-state-privacy-laws
+  conforms: true
+  evidence: 'Privacy policy enumerates Covered States and their acts (CCPA, Colorado
+    SB 190, Connecticut SB 6, Delaware HB 154, Utah SB 227, Virginia VCDPA) with
+    effective dates and consumer rights.'
+  source: https://www.pebblepost.com/privacy-policy/
+- id: gdpr
+  conforms: partial
+  evidence: 'PebblePost publishes a legitimate-interest page and states that data is
+    transferred to and stored in the United States. It operates a US household-graph
+    business; no EU representative, SCC or adequacy mechanism is named.'
+  source: https://www.pebblepost.com/legitimate-interest/
+- id: dsar-portal
+  conforms: true
+  evidence: 'Data subject requests are handled through a OneTrust privacy portal
+    (Privacy Center + Do Not Sell or Share My Personal Information web forms), and
+    PebblePost links the California DROP (Delete Request and Opt-out Platform).'
+  source: https://privacyportal.onetrust.com/webform/f3224586-fa40-4b58-822e-e86fec4761ed/39d1f47c-b268-42dc-8009-25d1fd37d305
+- id: fsc-certified-paper
+  conforms: true
+  evidence: 'Sustainability page and llms.txt state PebblePost offers FSC Certified
+    paper options and partners with Veritree.'
+  source: https://www.pebblepost.com/sustainability/
+- id: openapi
+  conforms: false
+  evidence: 'No OpenAPI or Swagger document at any probed location on www.pebblepost.com,
+    api.pebblepost.com, api.pbbl.co, docs.pebblepost.com or pdm.pebblepost.com.'
+- id: oauth2
+  conforms: false
+  evidence: No /.well-known/oauth-authorization-server and no documented OAuth flow.
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every host.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Observed error bodies are custom JSON ({message, errorType}), not
+    application/problem+json.'
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every host.
+- id: asyncapi
+  conforms: false
+  evidence: No published event, streaming or webhook surface was found.
+- id: a2a-agent-card
+  conforms: false
+  evidence: '/.well-known/agent-card.json and /.well-known/agent.json return 404 on
+    www.pebblepost.com, api.pebblepost.com and pdm.pebblepost.com.'
+- id: llms-txt
+  conforms: true
+  evidence: 'https://www.pebblepost.com/llms.txt returns 200 text/plain, a
+    well-formed llms.txt with H1, blockquote summary and link sections.'
+  source: https://www.pebblepost.com/llms.txt
+- id: hsts
+  conforms: true
+  evidence: 'www.pebblepost.com and docs.pebblepost.com send Strict-Transport-Security
+    with max-age 31536000; TLS 1.3 on all hosts.'
+  source: security/pebblepost-domain-security.yml
+- id: dnssec
+  conforms: true
+  evidence: DNSSEC signed on both pebblepost.com and pbbl.co.
+  source: security/pebblepost-domain-security.yml
+- id: dmarc
+  conforms: true
+  evidence: 'DMARC present on both domains — pebblepost.com p=quarantine, pbbl.co
+    p=reject; SPF present on both.'
+  source: security/pebblepost-domain-security.yml
+- id: caa
+  conforms: false
+  evidence: No CAA records on pebblepost.com or pbbl.co.
+  source: security/pebblepost-domain-security.yml

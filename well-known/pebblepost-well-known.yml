@@ -1,0 +1,45 @@
+generated: '2026-08-04'
+method: probed
+source: live GET of /.well-known/* on every PebblePost host
+# NO HITS. Every /.well-known/ path returned 404 on every host probed. This file is
+# the honest negative record so a later round does not re-walk the same ground; it is
+# deliberately NOT wired as a `WellKnown` pointer in apis.yml, because there is no
+# well-known catalog to point at.
+hosts:
+- host: https://www.pebblepost.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 200, file: ../llms/pebblepost-llms.txt}
+  - {path: /robots.txt, status: 200}
+- host: https://api.pebblepost.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://pdm.pebblepost.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://api.pbbl.co
+  documents:
+  - {path: /.well-known/agent-card.json, status: 403, note: AWS API Gateway returns
+      "Missing Authentication Token" for every path}
+summary:
+  hits: 0
+  security_txt: false
+  openid_configuration: false
+  api_catalog: false
+  agent_card: false
+x-gap:
+  - PebblePost publishes no /.well-known/security.txt (RFC 9116). A security researcher
+    has no machine-discoverable contact or disclosure policy; the only published address
+    is privacy@pebblepost.com in the privacy policy.

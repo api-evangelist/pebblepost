@@ -1,0 +1,83 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.pebblepost.com/
+docs: https://docs.pebblepost.com/collection/58-performance-dashboard-access
+# DERIVED FROM NOTHING MECHANICAL: PebblePost publishes no OpenAPI, so
+# derive-authentication.py has no securitySchemes to read. Everything below was
+# observed directly against live hosts or read from PebblePost's own help articles.
+summary:
+  types: [account-issued-identifier, out-of-band-credential-exchange, interactive-login]
+  oauth2: false
+  openid_connect: false
+  api_key_self_serve: false
+  public_api_reference: false
+  note: 'PebblePost operates no public developer program. There is no self-serve API
+    key issuance, no OAuth authorization server, and no published API reference. Every
+    credential is issued or exchanged through a PebblePost account team.'
+schemes:
+- name: brand-id
+  surface: PebblePost JavaScript Tag
+  type: account-issued-identifier
+  in: client-side-variable
+  parameter: _pp.brid
+  issued_by: PebblePost
+  self_serve: false
+  description: 'A PebblePost-issued Brand ID embedded in the site tag; it also selects
+    the per-brand collector script path on cdn.pbbl.co. Not a secret and not an
+    authenticated credential — it identifies the brand, it does not authorize a caller.'
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- name: shopify-private-app
+  surface: Shopify data connector
+  type: out-of-band-credential-exchange
+  direction: inbound-to-pebblepost
+  self_serve: false
+  description: 'The brand creates a Shopify private application and sends the generated
+    URL, key and password to their PebblePost Account Manager. PebblePost authenticates
+    to Shopify with the brand''s credentials; the brand never authenticates to PebblePost.'
+  source: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
+- name: pdm-manager-login
+  surface: PDM Manager (Performance Dashboard)
+  type: interactive-login
+  url: https://pdm.pebblepost.com/#/login
+  self_serve: false
+  description: 'Browser login to the PebblePost customer platform. Accounts are
+    activated by PebblePost, not by self-registration; the help article covering access
+    is an account-activation and password-help article, not a sign-up flow.'
+  source: https://docs.pebblepost.com/article/61-account-activation-login-help
+- name: api-gateway-token
+  surface: api.pbbl.co
+  type: unknown-bearer
+  self_serve: false
+  description: 'AWS API Gateway. Every path — including / and /openapi.json — returns
+    HTTP 403 with {"message":"Missing Authentication Token"} and header
+    x-amzn-errortype: MissingAuthenticationTokenException. The token type, header name
+    and issuance flow are not published. Recorded as observed behaviour only; NOT an
+    assertion about the scheme in use.'
+  observed:
+    http_status: 403
+    body: '{"message":"Missing Authentication Token"}'
+- name: platform-api
+  surface: api.pebblepost.com
+  type: undocumented
+  self_serve: false
+  description: 'An Express service. GET /health returns 200 {"status":"UP"}; every
+    other probed path returns 404 with {"message":"Resource not found",
+    "errorType":"ResourceNotFoundError"}. No authentication challenge was returned on
+    any anonymous path, so the auth model could not be observed and is not asserted.'
+  observed:
+    health_status: 200
+    unknown_path_status: 404
+x-evidence:
+  fetched: '2026-08-04'
+  probes:
+  - {url: 'https://api.pebblepost.com/health', status: 200}
+  - {url: 'https://api.pebblepost.com/openapi.json', status: 404}
+  - {url: 'https://api.pbbl.co/', status: 403}
+  - {url: 'https://pdm.pebblepost.com/', status: 200}
+  - {url: 'https://www.pebblepost.com/.well-known/openid-configuration', status: 404}
+x-gap:
+  - 'No published authentication reference of any kind. A prospective integrator cannot
+    learn how to obtain a credential, which header carries it, or what its lifetime is
+    without first talking to a salesperson. Publishing an auth page — even one that
+    says "credentials are issued by your account team, sent as `Authorization: Bearer`"
+    — would close the single largest gap in this profile.'

@@ -1,23 +1,144 @@
 aid: pebblepost
 name: PebblePost
-description: 'PebblePost is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'PebblePost is a New York-based commerce marketing platform that pioneered
+  Programmatic Direct Mail (PDM) and now also operates a Performance CTV product. Its
+  Performance Marketing Engine turns first-party website intent signals, household
+  identity and transaction data — surfaced through the PebblePost Graph — into targeted
+  physical mail and connected-TV campaigns for retail and direct-to-consumer brands,
+  with conversion measurement reported through a Performance Dashboard. Brands integrate
+  by installing the PebblePost JavaScript tag (a window._pp client-side collector served
+  from cdn.pbbl.co) and by syncing commerce data through connectors such as Shopify.
+  Live API hosts run at api.pebblepost.com and api.pbbl.co, but PebblePost publishes
+  no public developer portal, API reference, OpenAPI definition or self-serve API keys
+  — API access is arranged through a PebblePost account team.'
 url: https://raw.githubusercontent.com/api-evangelist/pebblepost/refs/heads/main/apis.yml
+image: https://www.pebblepost.com/wp-content/themes/pebblepost/assets/static/img/logo.svg
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Marketing
+- Advertising
+- Direct Mail
+- Connected TV
+- Retail
+- Commerce
+- Identity
+- Analytics
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- name: PebblePost JavaScript Tag
+  description: 'The PebblePost JavaScript tag is the provider''s public client-side
+    integration surface. Brands drop a script on their site that populates a window._pp
+    array with a Brand ID (brid) and Brand Customer ID (brcid), plus optional conversion
+    fields (orderId, orderValue), email and sessionId, then asynchronously loads a
+    per-brand collector script from cdn.pbbl.co. It is the mechanism PebblePost uses
+    to capture website intent and conversion events that drive Programmatic Direct
+    Mail and Performance CTV targeting and attribution.'
+  humanURL: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+  baseURL: https://cdn.pbbl.co
+  tags:
+  - Tag Management
+  - Conversion Tracking
+  - Advertising
+  properties:
+  - type: Documentation
+    url: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+  - type: Components
+    url: components/pebblepost-components.yml
+- name: PebblePost Platform API
+  description: 'A live but publicly undocumented platform API surface behind the PebblePost
+    PDM Manager application. Two hosts respond: api.pebblepost.com (an Express service
+    that answers GET /health with {"status":"UP"} and returns a JSON error envelope
+    of {message, errorType} on unknown paths) and api.pbbl.co (an AWS API Gateway that
+    answers every path with HTTP 403 Missing Authentication Token). PebblePost publishes
+    no API reference, OpenAPI definition, or self-serve credential flow for either host;
+    access is arranged through a PebblePost account team.'
+  humanURL: https://www.pebblepost.com/platform/
+  baseURL: https://api.pebblepost.com
+  tags:
+  - Marketing
+  - Direct Mail
+  - Advertising
+  properties:
+  - type: Authentication
+    url: authentication/pebblepost-authentication.yml
+  - type: ErrorCatalog
+    url: errors/pebblepost-problem-types.yml
+  x-evidence:
+    fetched: '2026-08-04'
+    probes:
+    - url: https://api.pebblepost.com/health
+      status: 200
+    - url: https://api.pebblepost.com/openapi.json
+      status: 404
+    - url: https://api.pbbl.co/
+      status: 403
 common:
+- type: DomainSecurity
+  url: security/pebblepost-domain-security.yml
 - type: Website
-  url: https://forgeglobal.com/pebblepost_stock/
+  url: https://www.pebblepost.com/
+- type: Documentation
+  url: https://docs.pebblepost.com/
+- type: GettingStarted
+  url: https://docs.pebblepost.com/collection/1-getting-started
+- type: Support
+  url: https://docs.pebblepost.com/
+- type: Blog
+  url: https://www.pebblepost.com/blog/
+- type: GitHubOrganization
+  url: https://github.com/PebblePost
+- type: Login
+  url: https://pdm.pebblepost.com/#/login
+- type: TermsOfService
+  url: https://www.pebblepost.com/terms-of-use/
+- type: PrivacyPolicy
+  url: https://www.pebblepost.com/privacy-policy/
+- type: LLMsTxt
+  url: llms/pebblepost-llms.txt
+- type: Components
+  url: components/pebblepost-components.yml
+- type: Authentication
+  url: authentication/pebblepost-authentication.yml
+- type: ErrorCatalog
+  url: errors/pebblepost-problem-types.yml
+- type: Conformance
+  url: conformance/pebblepost-conformance.yml
+- type: Compliance
+  url: https://trust.pebblepost.com/
+- type: TrustCenter
+  url: security/pebblepost-trust-center.yml
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 8
+  pass: local-v1
+x-coverage:
+  state: gated
+  reason: sales-gate
+  detail: 'PebblePost runs live API hosts but publishes no developer program at all —
+    api.pbbl.co is an AWS API Gateway that answers every path, including /openapi.json,
+    with HTTP 403 "Missing Authentication Token", and the only public docs site
+    (docs.pebblepost.com, a Help Scout help center) covers dashboard reporting and
+    creative specs, telling integrators to hand Shopify credentials to "your PebblePost
+    Account Manager" instead of documenting an API.'
+  evidence:
+  - url: https://api.pbbl.co/openapi.json
+    status: 403
+  - url: https://api.pebblepost.com/openapi.json
+    status: 404
+  - url: https://api.pebblepost.com/health
+    status: 200
+  - url: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
+    status: 200
+  - url: https://www.pebblepost.com/.well-known/agent-card.json
+    status: 404
+  checked: '2026-08-04'

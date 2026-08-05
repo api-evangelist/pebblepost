@@ -1,0 +1,41 @@
+generated: '2026-08-04'
+method: searched
+probe: true
+source: https://trust.pebblepost.com/
+url: https://trust.pebblepost.com/
+platform: Vanta Trust Center
+title: PebblePost Trust Center
+# Certifications could NOT be enumerated anonymously. The trust report is a Vanta
+# single-page app; its content is served from a signed GraphQL endpoint that rejects
+# unsigned requests ("Missing `signature` or `signedAt`", HTTP 400), so no certification
+# list is machine-readable from the public page. The one certification claim PebblePost
+# publishes in plain HTML is the SOC 2 statement in its privacy policy, recorded below.
+certifications:
+- SOC 2
+certification_evidence:
+- certification: SOC 2
+  source: https://www.pebblepost.com/privacy-policy/
+  quote: 'PebblePost maintains and has placed controls within its Services that upholds
+    commitments and system requirements for SOC 2 compliance.'
+  note: A compliance claim in the privacy policy, not an audit report or a certificate
+    number. PebblePost links to the AICPA SOC suite overview page rather than to its
+    own report.
+  reference: https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services
+evidence:
+- source: https://trust.pebblepost.com/
+  http_status: 200
+  content_type: text/html
+  observed: 'Vanta-hosted trust center; page <title> is "PebblePost Trust Center";
+    assets served from assets.vanta.com; canonical https://trust.pebblepost.com'
+- source: https://trust.pebblepost.com/graphql
+  http_status: 400
+  observed: 'GraphQL rejects unsigned requests: {"errors":[{"message":"Missing `signature`
+    or `signedAt`"}]} — report contents are not anonymously readable'
+- source: https://www.pebblepost.com/privacy-policy/
+  http_status: 200
+  observed: SOC 2 compliance statement in the Security section
+x-gap:
+  - The trust center exists but publishes nothing a machine can read anonymously.
+    Named certifications, audit dates and subprocessors are all behind Vanta's signed
+    report. Publishing the certification list in the page's static HTML (or an
+    accompanying /.well-known/security.txt) would make the posture verifiable.

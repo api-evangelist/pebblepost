@@ -1,0 +1,50 @@
+# PebblePost
+
+
+> Drive incremental revenue with Performance CTV and Programmatic Direct Mail. Built for marketers, backed by real transactions.
+
+
+## About PebblePost
+PebblePost is a commerce marketing platform that turns billions of identity, intent, and transaction data signals into incremental revenue for leading brands. It enables marketers to target decision-ready consumers, defend every dollar, and know with certainty what drives growth across Performance CTV and Programmatic Direct Mail.
+
+
+## Core Solutions
+
+
+- **Programmatic Direct Mail (PDM)**: Physical marketing sent only to households most likely to convert, bridging offline and online strategies, increasing ROI, and reducing waste.
+- **Performance CTV**: Connected TV advertising campaigns built for measurable performance, moving beyond awareness to optimize conversions and incremental business impact.
+
+
+## Use Cases
+
+
+- **Acquisition Solutions**: Designed to Identify, engage, and convert new customers with precision.
+- **Retention Solutions**: Designed to deepen relationships, upsell, cross-sell, and win back lapsed customers.
+
+
+## Technology & Data
+
+
+- **Performance Marketing Engine**: Automates targeting, optimization, and measurement for speed, scale, and accuracy.
+- **PebblePost Graph**: Securely connects billions of first-party household, online intent, and transaction data points within a privacy-by-design framework to fuel reach and relevance.
+- **PebblePost Platform**: A single, unified platform that makes it easy to onboard data, define marketing goals, and measure success without manual work.
+
+
+## Sustainability
+PebblePost focuses on sustainable direct mail by targeting only high-intent consumers, partnering with environmental restoration platforms like Veritree, and offering FSC® Certified paper options.
+
+
+## Important Links
+- [Performance CTV Overview](https://www.pebblepost.com/performance-ctv/)
+- [Performance Marketing Engine](https://www.pebblepost.com/performance-marketing-engine/)
+- [Acquisition](https://www.pebblepost.com/acquisition-solutions/)
+- [Retention](https://www.pebblepost.com/retention-solutions/)
+- [PebblePost Graph](https://www.pebblepost.com/graph/)
+- [PebblePost Platform](https://www.pebblepost.com/platform/)
+- [Success Stories](https://www.pebblepost.com/success-stories)
+- [About Us](https://www.pebblepost.com/about-us)
+- [Sustainability](https://www.pebblepost.com/sustainability)
+- [Blog](https://www.pebblepost.com/blog/)
+- [Resources](https://www.pebblepost.com/resources)
+- [News](https://www.pebblepost.com/news/)
+- [ROI Calculator](https://www.pebblepost.com/roi-calculator/)

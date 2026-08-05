@@ -1,0 +1,54 @@
+generated: '2026-08-04'
+method: probed
+source: live anonymous GETs against https://api.pebblepost.com and https://api.pbbl.co
+format: custom-json
+# NOT RFC 9457. PebblePost publishes no error reference, so nothing could be searched
+# or derived from a spec. Every entry below is an error envelope actually returned to
+# an anonymous request during this pass, quoted verbatim. This is an observed partial
+# catalog, not the provider's full error contract.
+coverage: partial
+envelopes:
+- host: api.pebblepost.com
+  runtime: Express (x-powered-by header)
+  content_type: application/json; charset=utf-8
+  shape:
+    message: string
+    errorType: string
+- host: api.pbbl.co
+  runtime: AWS API Gateway
+  content_type: application/json
+  shape:
+    message: string
+  headers:
+    x-amzn-errortype: string
+problems:
+- status: 404
+  host: api.pebblepost.com
+  error_type: ResourceNotFoundError
+  title: Resource not found
+  body: '{"message":"Resource not found","errorType":"ResourceNotFoundError"}'
+  observed_on:
+  - https://api.pebblepost.com/
+  - https://api.pebblepost.com/v1
+  - https://api.pebblepost.com/openapi.json
+  - https://api.pebblepost.com/graphql
+  remediation: 'Path does not exist on this service. No route listing is published;
+    the only anonymously reachable route found was GET /health.'
+- status: 403
+  host: api.pbbl.co
+  error_type: MissingAuthenticationTokenException
+  title: Missing Authentication Token
+  body: '{"message":"Missing Authentication Token"}'
+  header: 'x-amzn-errortype: MissingAuthenticationTokenException'
+  observed_on:
+  - https://api.pbbl.co/
+  - https://api.pbbl.co/health
+  - https://api.pbbl.co/openapi.json
+  remediation: 'AWS API Gateway default. Returned both for genuinely missing credentials
+    and for unmatched routes, so it does not distinguish "not authorized" from "no such
+    path". Credentials are issued by a PebblePost account team.'
+x-gap:
+  - No public error reference. There is no error-code registry, no problem-type URIs,
+    no application/problem+json, and the api.pbbl.co gateway conflates 403-no-credential
+    with 403-no-route. An agent or integrator cannot distinguish a retryable error from
+    a permanent one.

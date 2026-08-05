@@ -1,0 +1,69 @@
+generated: '2026-08-04'
+method: searched
+source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+# PebblePost ships no server-side SDKs in any public package registry (npm, PyPI,
+# RubyGems, crates.io all miss). Its ONE public client-side integration surface is the
+# PebblePost JavaScript tag — a script a brand embeds on its own site. That makes it a
+# `Components` artifact, not a `Packages` one.
+components:
+- family: Tag
+  name: PebblePost JavaScript Tag
+  type: script-embed
+  docs: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+  loader_host: https://cdn.pbbl.co
+  loader_url_pattern: https://cdn.pbbl.co/<account-path>/<brid>.js
+  global: window._pp
+  loading: async
+  purpose: 'Captures website traffic events and conversion activity used to drive
+    Programmatic Direct Mail and Performance CTV targeting and attribution.'
+  placement: 'Site-wide, before the closing </body> tag; conversion variables set on
+    the order-confirmation page.'
+  parameters:
+  - name: _pp.brid
+    label: Brand ID
+    required: true
+    description: PebblePost-issued brand identifier; also selects the per-brand
+      collector script filename on cdn.pbbl.co.
+    issued_by: PebblePost
+  - name: _pp.brcid
+    label: Brand Customer ID
+    required: true
+    description: The brand's own identifier for the visiting customer.
+  - name: _pp.orderId
+    label: Order ID
+    required: false
+    group: conversion
+    description: Order identifier, set on conversion pages.
+  - name: _pp.orderValue
+    label: Order Value
+    required: false
+    group: conversion
+    description: Order amount in dollars, set on conversion pages.
+  - name: _pp.email
+    label: Email
+    required: false
+    group: optional
+    description: Customer email address.
+  - name: _pp.sessionId
+    label: Session ID
+    required: false
+    group: optional
+    description: The brand's first-party session identifier.
+connectors:
+- name: Shopify
+  docs: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
+  mechanism: 'Brand creates a Shopify private application and sends the generated URL,
+    key and password to their PebblePost Account Manager. Credentials are exchanged
+    out of band — there is no self-serve OAuth connect flow.'
+  purpose: Keeps Shopify customer address data in sync for targeting, suppression and
+    transaction reporting.
+  self_serve: false
+- name: Adobe Experience Platform
+  docs: https://experienceleague.adobe.com/en/docs/experience-platform/destinations/catalog/email/pebblepost
+  mechanism: PebblePost is published as a tag extension in the Adobe Experience Platform
+    destinations catalog.
+  self_serve: false
+x-gap:
+  - The tag's collector endpoint, event schema and response contract are not documented
+    anywhere public — only the input variables are. There is no versioning statement
+    for the tag and no consent/CMP integration guidance in the installation article.
