@@ -1,0 +1,125 @@
+generated: '2026-08-12'
+method: derived
+source: 'derived from errors/pebblepost-problem-types.yml,
+  authentication/pebblepost-authentication.yml, lifecycle/pebblepost-lifecycle.yml,
+  rate-limits/pebblepost-rate-limits.yml and components/pebblepost-components.yml, plus
+  live header probes of api.pebblepost.com and api.pbbl.co'
+# CROSS-CUTTING SEMANTICS, OBSERVED NOT DOCUMENTED. PebblePost publishes no API
+# reference, so nothing here is quoted from a convention guide — there is no convention
+# guide. Every `supported: true` below is an observation from a live response or from
+# PebblePost's own integration article; everything unobserved is `unknown`, never
+# `false`, because absence of an anonymous signal is not proof of absence behind
+# credentials. This file is wired as `Conventions` ONLY — it deliberately carries NO
+# `Idempotency` pointer, because no idempotency mechanism is documented or observable.
+summary:
+  documented_convention_guide: false
+  api_reference: false
+  machine_readable_contract: false
+  observable_anonymously: partial
+auth:
+  style: out-of-band
+  documented: false
+  self_serve: false
+  detail: 'Credentials are issued or exchanged by a PebblePost account team. The
+    client-side tag carries a PebblePost-issued Brand ID (an identifier, not a
+    credential); api.pbbl.co rejects anonymous calls with the AWS API Gateway
+    MissingAuthenticationToken default without naming a header or scheme.'
+  see: authentication/pebblepost-authentication.yml
+idempotency:
+  supported: unknown
+  header: null
+  scope: null
+  retention: null
+  documented: false
+  detail: 'NOT DOCUMENTED AND NOT OBSERVABLE. No idempotency key header is named
+    anywhere in PebblePost''s public material, and no write endpoint is anonymously
+    reachable on which retry behaviour could be observed. This matters most for the
+    JavaScript tag: conversion events are fired client-side with an orderId, and the
+    installation guide gives no guidance on duplicate suppression if a confirmation
+    page is reloaded or the tag fires twice. Recorded as unknown, not false.'
+  see: components/pebblepost-components.yml
+pagination:
+  supported: unknown
+  style: null
+  request_params: []
+  response_fields: []
+  detail: 'No collection endpoint is anonymously reachable and no reference documents
+    one, so no pagination convention could be observed. The Performance Dashboard
+    exposes reporting as an interactive UI and as scheduled email deliveries, not as a
+    paged API.'
+field_expansion:
+  supported: unknown
+  detail: No published object model; nothing to expand or sparse-select against.
+metadata:
+  supported: true
+  mechanism: client-side-tag-variable
+  field: _pp.tags
+  detail: 'The one genuine free-form metadata channel PebblePost publishes. Tealium''s
+    published mapping for the PebblePost tag documents a destination variable `tags`,
+    described as "A custom value you may pass through the PebblePost tag" — i.e. an
+    arbitrary caller-supplied label attached to the event.'
+  source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+request_tracing:
+  supported: partial
+  request_id_header: x-amzn-requestid
+  detail: 'api.pbbl.co returns AWS API Gateway correlation headers on every response —
+    x-amzn-requestid and x-amz-apigw-id — which are usable as support references even
+    though PebblePost does not document them as such. api.pebblepost.com (Express)
+    returns NO request-id header at all, so a caller has nothing to quote when
+    reporting a fault on that host.'
+  observed:
+  - host: api.pbbl.co
+    headers: [x-amzn-requestid, x-amz-apigw-id, x-amzn-errortype]
+  - host: api.pebblepost.com
+    headers: []
+versioning:
+  scheme: none-observed
+  detail: 'No version segment in any observed path and no version header. See
+    lifecycle/pebblepost-lifecycle.yml.'
+  see: lifecycle/pebblepost-lifecycle.yml
+error_envelope:
+  format: custom-json
+  rfc9457: false
+  content_type: application/json
+  shapes:
+  - host: api.pebblepost.com
+    fields: [message, errorType]
+    example: '{"message":"Resource not found","errorType":"ResourceNotFoundError"}'
+  - host: api.pbbl.co
+    fields: [message]
+    example: '{"message":"Missing Authentication Token"}'
+    error_type_header: x-amzn-errortype
+  detail: 'Two different envelopes on two hosts of the same product, neither of them
+    application/problem+json and neither documented.'
+  see: errors/pebblepost-problem-types.yml
+rate_limit_signaling:
+  supported: false
+  headers: []
+  status_on_exhaustion: null
+  detail: 'No rate-limit headers on either host, and no documented limit. See
+    rate-limits/pebblepost-rate-limits.yml.'
+  see: rate-limits/pebblepost-rate-limits.yml
+content_negotiation:
+  request_formats: [application/json]
+  response_formats: [application/json]
+  detail: 'Both live hosts answer application/json. cdn.pbbl.co serves JavaScript and,
+    on unmatched paths, an S3 AccessDenied XML body.'
+transport:
+  https_only: true
+  http2: true
+  tls: TLSv1.3
+  hsts:
+    www.pebblepost.com: true
+    docs.pebblepost.com: true
+    cdn.pbbl.co: false
+  see: security/pebblepost-domain-security.yml
+x-gap:
+- 'There is no conventions surface at all, so every cross-cutting question an
+  integrator has — how do I retry safely, how do I page, which header carries my
+  credential, what do I quote when something breaks — is answerable only by asking an
+  account manager. The single highest-value fix is publishing an idempotency rule for
+  the conversion tag, because duplicate conversion events directly distort the Revenue,
+  Conversions, CVR, CPA and ROAS metrics PebblePost bills and reports against.'
+- 'The two API hosts disagree with each other on error envelope and on correlation
+  headers. Consistency across api.pebblepost.com and api.pbbl.co would be a
+  no-documentation-required improvement.'

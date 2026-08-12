@@ -1,0 +1,54 @@
+generated: '2026-08-12'
+method: searched
+source: 'https://www.pebblepost.com/page-sitemap.xml (full page inventory) plus direct
+  probes of the conventional pricing paths'
+# PebblePost PUBLISHES NO PRICING. This is a recorded zero, not an omission. The full
+# WordPress page sitemap for www.pebblepost.com was enumerated (65 pages) and contains
+# no pricing, plans, packages or rate-card page of any kind; the conventional paths
+# 404. Commercial terms are quoted by a PebblePost salesperson.
+plan_count: 0
+pricing_model: quote-only
+self_serve_signup: false
+free_tier: false
+currency: null
+pricing_url: null
+evidence:
+- url: https://www.pebblepost.com/pricing/
+  status: 404
+  observed: 'WordPress theme 404 page, <title>Page not found - PebblePost</title>.'
+- url: https://www.pebblepost.com/pricing
+  status: 404
+- url: https://www.pebblepost.com/page-sitemap.xml
+  status: 200
+  observed: '65 published pages, none of them a pricing or plans page. The nearest
+    commercial pages are conversion/lead-capture surfaces: /lets-chat/, /learn-more/,
+    /roi-calculator/ and /decision_ready_audiences_book_a_meeting/.'
+- url: https://docs.pebblepost.com/
+  status: 200
+  observed: 'Help center has four collections — Getting Started, Performance Dashboard
+    Access, Performance Dashboard Reports Help, Reporting Dashboards — and no pricing
+    article.'
+cost_surfaces:
+- name: ROI Calculator
+  url: https://www.pebblepost.com/roi-calculator/
+  status: 200
+  type: lead-capture-estimator
+  note: 'The only public surface that touches money. It estimates a return, not a
+    price: it does not publish a rate, a CPM, a per-piece cost or a minimum spend.'
+- name: Book a meeting
+  url: https://www.pebblepost.com/lets-chat/
+  status: 200
+  type: sales-contact
+billing_units_referenced:
+- unit: mail piece
+  source: https://docs.pebblepost.com/article/21-performance-dashboard-metrics-glossary
+  quote: 'Ad Spend: "Your total cost based on the number of mail pieces sent."'
+  note: 'PebblePost''s own metrics glossary confirms billing is per mail piece sent,
+    but publishes no rate for that unit.'
+plans: []
+x-gap:
+- 'No published price, no rate card, no minimum, no unit cost, and no self-serve sign
+  up. A buyer cannot estimate spend, and an agent cannot reason about cost at all,
+  without first booking a meeting. PebblePost''s own dashboard glossary names the
+  billing unit (the mail piece) — publishing even a starting rate against that unit
+  would move this from quote-only to comparable.'

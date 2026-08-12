@@ -1,6 +1,11 @@
-generated: '2026-08-04'
+generated: '2026-08-12'
 method: searched
 source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+also_sourced_from:
+- https://docs.tealium.com/client-side-tags/pebblepost-tag/
+- https://docs.getelevar.com/docs/pebble-post
+- https://help.rockerbox.com/article/ka6m3mfdig-pebble-post
+- https://www.pebblepost.com/blog/pebblepost-shopify-public-app-enables-secure-automated-data-pipeline-for-brands/
 # PebblePost ships no server-side SDKs in any public package registry (npm, PyPI,
 # RubyGems, crates.io all miss). Its ONE public client-side integration surface is the
 # PebblePost JavaScript tag — a script a brand embeds on its own site. That makes it a
@@ -49,6 +54,22 @@ components:
     required: false
     group: optional
     description: The brand's first-party session identifier.
+  # Added 2026-08-12. These two fields are collected by the same tag but appear ONLY in
+  # Tealium's published mapping for it, never in PebblePost's own installation guide.
+  - name: end_url
+    label: Synthetic Endpoint
+    required: false
+    group: partner-documented
+    description: The URL trigger for the transaction
+    documented_by: Tealium
+    source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+  - name: tags
+    label: Customer Tag
+    required: false
+    group: partner-documented
+    description: A custom value you may pass through the PebblePost tag
+    documented_by: Tealium
+    source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
 connectors:
 - name: Shopify
   docs: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
@@ -58,12 +79,73 @@ connectors:
   purpose: Keeps Shopify customer address data in sync for targeting, suppression and
     transaction reporting.
   self_serve: false
+  x-discrepancy:
+    checked: '2026-08-12'
+    detail: 'PebblePost announced a Shopify PUBLIC app on 2023-06-01 — "Reduce back and
+      forth sharing of API keys across insecure channels with dynamic retrieval of API
+      keys using the public app" — but the help article that integrators are sent to
+      still documents ONLY the private-app manual credential handover, three years
+      later. No PebblePost listing exists in the Shopify App Store either.'
+    evidence:
+    - url: https://www.pebblepost.com/blog/pebblepost-shopify-public-app-enables-secure-automated-data-pipeline-for-brands/
+      status: 200
+      published: '2023-06-01'
+    - url: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
+      status: 200
+      observed: 'Still instructs: "Create a new private Application for PebblePost" and
+        "Send your url with the generated key and password to your PebblePost Account
+        Manager".'
+    - url: https://apps.shopify.com/pebblepost
+      status: 404
+    - url: https://apps.shopify.com/search?q=pebblepost
+      status: 200
+      observed: No PebblePost app listing returned.
 - name: Adobe Experience Platform
   docs: https://experienceleague.adobe.com/en/docs/experience-platform/destinations/catalog/email/pebblepost
   mechanism: PebblePost is published as a tag extension in the Adobe Experience Platform
     destinations catalog.
   self_serve: false
+- name: Tealium iQ Tag Management
+  docs: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+  mechanism: 'PebblePost ships as a vendor tag in the Tealium iQ catalogue. Configured
+    with a single parameter, "PebblePost Marketer ID" (integer, provided by PebblePost),
+    then mapped to six destination variables — email, end_url, tags (Standard) and
+    order_id, order_total, customer_id (E-Commerce). Recommended load rule: All Pages.'
+  purpose: 'Lets a brand fire the PebblePost tag from its existing tag manager and map
+    Tealium data-layer variables onto PebblePost''s collection fields.'
+  self_serve: true
+  self_serve_note: 'Self-serve inside Tealium — but the Marketer ID it requires is still
+    issued by PebblePost.'
+  documented_by: Tealium
+  discovered: '2026-08-12'
+- name: Google Tag Manager (via Elevar)
+  docs: https://docs.getelevar.com/docs/pebble-post
+  mechanism: 'Elevar publishes its own PebblePost pixel/web-tracking setup guide for
+    Shopify brands, deploying the tag through Google Tag Manager.'
+  self_serve: true
+  documented_by: Elevar
+  discovered: '2026-08-12'
+- name: Rockerbox
+  docs: https://help.rockerbox.com/article/ka6m3mfdig-pebble-post
+  mechanism: 'Rockerbox documents an existing PebblePost integration in which Rockerbox
+    receives user-level log files from PebblePost for marketing attribution.'
+  direction: pebblepost-to-partner
+  transport: file-delivery
+  self_serve: false
+  documented_by: Rockerbox
+  discovered: '2026-08-12'
+  note: 'The only evidence found of PebblePost delivering data OUT to a partner
+    system, and it is a file drop rather than an API or webhook.'
 x-gap:
   - The tag's collector endpoint, event schema and response contract are not documented
     anywhere public — only the input variables are. There is no versioning statement
     for the tag and no consent/CMP integration guidance in the installation article.
+  - 'PebblePost''s partners document PebblePost''s own integration surface better than
+    PebblePost does. Tealium publishes the full field mapping including two fields
+    (end_url, tags) absent from PebblePost''s guide; Elevar publishes a GTM install
+    walkthrough; Rockerbox documents the outbound log-file feed. A brand reading only
+    docs.pebblepost.com sees the smallest version of the integration.'
+  - 'The 2023 Shopify public-app announcement is not reflected in the integration
+    documentation and no app listing is findable, so the published instruction remains
+    to email an API key and password to an account manager — the exact practice the
+    announcement said it was replacing.'

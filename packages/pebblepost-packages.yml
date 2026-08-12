@@ -1,0 +1,96 @@
+generated: '2026-08-12'
+method: searched
+source: 'registry searches of npm, PyPI, RubyGems, Packagist, crates.io, pkg.go.dev
+  and the PebblePost GitHub organization (https://github.com/PebblePost)'
+# NO FIRST-PARTY SDK EXISTS. PebblePost publishes no client library in any public
+# package registry, and its GitHub organization holds a single public repository that
+# is an internal AWS log utility, not an API client. Every entry below that is marked
+# official:false is a THIRD-PARTY package written by somebody else against PebblePost;
+# it is recorded because it is real and dated, not because PebblePost ships it.
+# This file is deliberately NOT wired as `type: SDKs` in apis.yml — the sdk_count check
+# asserts the PROVIDER publishes an SDK, and PebblePost does not.
+official_package_count: 0
+third_party_package_count: 1
+registries_searched:
+- registry: npm
+  query: pebblepost
+  endpoint: https://registry.npmjs.org/-/v1/search?text=pebblepost
+  results: 0
+- registry: npm
+  query: pbbl
+  endpoint: https://registry.npmjs.org/-/v1/search?text=pbbl
+  results: 0
+- registry: pypi
+  query: pebblepost
+  endpoint: https://pypi.org/pypi/pebblepost/json
+  http_status: 404
+  results: 0
+- registry: rubygems
+  query: pebblepost
+  endpoint: https://rubygems.org/api/v1/gems/pebblepost.json
+  http_status: 404
+  results: 0
+- registry: crates.io
+  query: pebblepost
+  results: null
+  note: 'crates.io returned its data-access policy error rather than results; treated
+    as not-checked rather than as a zero.'
+- registry: packagist
+  query: pebblepost
+  endpoint: https://packagist.org/search.json?q=pebblepost
+  results: 1
+  note: The single result is third-party (see packages[] below).
+- registry: github
+  query: 'org:PebblePost'
+  endpoint: https://api.github.com/orgs/PebblePost/repos
+  results: 1
+  note: 'One public repo — aws-logs-parquet-converter (Python, "Convert AWS logs to
+    more efficient format for storage and query", last pushed 2026-08-11). It is an
+    internal data-engineering utility, not a client library for any PebblePost API,
+    and it is not published to PyPI.'
+packages:
+- language: php
+  registry: packagist
+  name: astrogoat/pebble-post
+  official: false
+  version: 1.6.0
+  published: '2025-08-25'
+  url: https://packagist.org/packages/astrogoat/pebble-post
+  repository: https://github.com/astrogoat/pebble-post
+  description: 'A PebblePost app for Strata'
+  release_count: 8
+  note: 'Third-party. Published by Astrogoat as a module for their own Strata (Laravel)
+    platform — it installs the PebblePost JavaScript tag into a Strata storefront. It
+    is not authored, endorsed or maintained by PebblePost, and it wraps the client-side
+    tag, not a server API.'
+distribution:
+- channel: cdn
+  name: PebblePost JavaScript Tag collector
+  registry: cdn
+  host: https://cdn.pbbl.co
+  url_pattern: https://cdn.pbbl.co/<account-path>/<brid>.js
+  version: null
+  published: null
+  official: true
+  note: 'CHECKED, NOTHING TO RECORD. The tag is distributed from a CDN, not a package
+    registry, so there is no metadata endpoint to query. The script URL published in
+    PebblePost''s own installation guide carries NO version segment and no integrity
+    hash — it floats to whatever the CDN currently serves, per brand. That is the
+    finding: an integrator cannot pin the tag, cannot tell which build is running on
+    their site, and has no changelog to compare against. Recorded as version: null
+    because it was checked and is genuinely unpinnable, not because it was skipped.'
+  evidence:
+  - url: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+    observed: 'Installation guide gives an unpinned per-brand script path on cdn.pbbl.co.'
+  - url: https://cdn.pbbl.co/openapi.json
+    http_status: 403
+    observed: 'S3-backed CDN; unmatched paths return an S3 AccessDenied XML body.'
+x-gap:
+- 'PebblePost ships no SDK in any language. Every server-side integration — the Shopify
+  data sync above all — is performed by PebblePost against the BRAND''s API using
+  credentials the brand hands over, which inverts the normal direction and removes any
+  need for a client library. The consequence is that a brand''s engineers have nothing
+  to install, nothing to version, and nothing to read.'
+- 'The one distributed artifact, the JavaScript tag, is unversioned and unpinned. There
+  is no SRI hash, no version in the URL, and no release notes, so a brand cannot audit
+  what code is executing on its own checkout pages.'

@@ -1,0 +1,59 @@
+generated: '2026-08-12'
+method: probed
+source: 'live anonymous requests against https://api.pebblepost.com and
+  https://api.pbbl.co, plus a search of https://docs.pebblepost.com/ for any published
+  limit'
+# NO PUBLISHED LIMITS AND NO RUNTIME SIGNAL. Both facts were checked separately and
+# both are negative: PebblePost documents no rate limit anywhere, AND neither live host
+# returns a rate-limit header on an anonymous request. An integrator has no number to
+# design against and no header to back off on.
+limit_count: 0
+documented: false
+headers_observed: false
+retry_after: false
+status_on_exhaustion: null
+docs: null
+probes:
+- host: api.pebblepost.com
+  url: https://api.pebblepost.com/health
+  status: 200
+  runtime: Express
+  response_headers:
+  - date
+  - content-type
+  - content-length
+  - x-powered-by
+  - etag
+  rate_limit_headers: []
+  note: 'No X-RateLimit-*, no RateLimit-* (RFC 9331 style), no Retry-After. 12
+    consecutive requests issued back to back all returned 200 with no throttling
+    signal, so no limit could be observed either.'
+  burst_test:
+    requests: 12
+    interval: back-to-back
+    statuses_returned: [200]
+    throttled: false
+- host: api.pbbl.co
+  url: https://api.pbbl.co/
+  status: 403
+  runtime: AWS API Gateway
+  response_headers:
+  - date
+  - content-type
+  - content-length
+  - x-amzn-requestid
+  - x-amzn-errortype
+  - x-amz-apigw-id
+  rate_limit_headers: []
+  note: 'AWS API Gateway supports usage plans with throttle and quota settings, and
+    returns 429 with {"message":"Too Many Requests"} when they are exceeded — but no
+    such plan is observable anonymously, because every path is rejected at the
+    authentication stage first with 403 MissingAuthenticationToken. Whether a quota
+    exists behind credentials is unknown and is NOT asserted here.'
+limits: []
+x-gap:
+- 'No rate limit is published and none is signalled at runtime. An agent or integrator
+  cannot implement correct backoff: there is no limit to respect, no counter to read,
+  and no Retry-After to obey. Emitting standard RateLimit-Limit / RateLimit-Remaining /
+  RateLimit-Reset headers, or simply documenting the API Gateway usage-plan throttle
+  that likely already exists, would close this with no new engineering.'

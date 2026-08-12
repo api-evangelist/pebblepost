@@ -1,0 +1,163 @@
+generated: '2026-08-12'
+method: searched
+source: https://docs.pebblepost.com/article/21-performance-dashboard-metrics-glossary
+# THE ONE CONTROLLED VOCABULARY PEBBLEPOST ACTUALLY PUBLISHES. PebblePost ships no
+# OpenAPI and no object reference, but it does publish a definitional glossary for the
+# Performance Dashboard, and every definition below is quoted verbatim from that
+# article. A second block captures the field names PebblePost exposes through its
+# client-side tag, taken from PebblePost's own installation guide and from Tealium's
+# published tag mapping. Nothing here is invented; where PebblePost gives no definition,
+# the field carries no definition.
+title: PebblePost Performance Vocabulary
+description: 'Reporting metrics and event-collection fields used across the PebblePost
+  Performance Dashboard and the PebblePost JavaScript tag.'
+term_count: 20
+terms:
+- term: Ad Spend
+  group: reporting-metric
+  definition: Your total cost based on the number of mail pieces sent.
+  quoted: true
+  billing_relevant: true
+- term: AOV
+  expanded: Average Order Value
+  group: reporting-metric
+  definition: Average order value calculated by dividing Revenue by the total number of
+    orders (based on your transaction file).
+  quoted: true
+  derived_from: [Revenue]
+- term: Conversions
+  group: reporting-metric
+  definition: The total number of conversions as verified by your transaction file
+  quoted: true
+- term: CPA
+  expanded: Cost per Acquisition
+  group: reporting-metric
+  definition: Cost per Acquisition calculated by dividing your total ad spend by total
+    number of conversions.
+  quoted: true
+  derived_from: [Ad Spend, Conversions]
+- term: CVR
+  expanded: Conversion Rate
+  group: reporting-metric
+  definition: Your conversion rate calculated by total conversions divided by total
+    mail pieces sent.
+  quoted: true
+  derived_from: [Conversions, Total Mail Sends]
+- term: Daily Mail Sends
+  group: reporting-metric
+  definition: The total number of mail pieces that PebblePost has sent, per day
+  quoted: true
+- term: Response Rate
+  group: reporting-metric
+  definition: The Rate of responses calculated by dividing total responses by total
+    mail sent.
+  quoted: true
+  derived_from: [Responses, Total Mail Sends]
+- term: Responses
+  group: reporting-metric
+  definition: The total number of on-site returned page views of users where PebblePost
+    mail was sent.
+  quoted: true
+- term: Revenue
+  group: reporting-metric
+  definition: The total order value attributed to PebblePost mail sends based on your
+    transaction data.
+  quoted: true
+- term: ROAS
+  expanded: Return on Ad Spend
+  group: reporting-metric
+  definition: The ratio of total order value to ad spend.
+  quoted: true
+  derived_from: [Revenue, Ad Spend]
+- term: Total Mail Sends
+  group: reporting-metric
+  definition: The total number of mail pieces that PebblePost has sent.
+  quoted: true
+- term: brid
+  label: Brand ID
+  group: tag-field
+  required: true
+  definition: 'PebblePost-issued brand identifier carried on the client-side tag; it
+    also selects the per-brand collector script path on cdn.pbbl.co.'
+  quoted: false
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- term: brcid
+  label: Brand Customer ID
+  group: tag-field
+  required: true
+  definition: The brand's own identifier for the visiting customer.
+  quoted: false
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- term: orderId
+  label: Order ID
+  group: tag-field
+  required: false
+  definition: Order identifier, set on conversion pages.
+  quoted: false
+  maps_to_metric: Conversions
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- term: orderValue
+  label: Order Value
+  group: tag-field
+  required: false
+  definition: Order amount, set on conversion pages.
+  quoted: false
+  maps_to_metric: Revenue
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- term: email
+  label: Customer Email
+  group: tag-field
+  required: false
+  definition: The email address for the customer
+  quoted: true
+  source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+- term: sessionId
+  label: Session ID
+  group: tag-field
+  required: false
+  definition: The brand's first-party session identifier.
+  quoted: false
+  source: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+- term: end_url
+  label: Synthetic Endpoint
+  group: tag-field
+  required: false
+  definition: The URL trigger for the transaction
+  quoted: true
+  source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+  note: 'Documented only by Tealium, not by PebblePost. Named in Tealium''s published
+    mapping for the PebblePost tag.'
+- term: tags
+  label: Customer Tag
+  group: tag-field
+  required: false
+  definition: A custom value you may pass through the PebblePost tag
+  quoted: true
+  source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+- term: Marketer ID
+  group: tag-field
+  required: true
+  definition: 'Integer value provided by PebblePost identifying the marketer/brand in
+    the Tealium tag configuration.'
+  quoted: false
+  source: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+  note: 'Tealium''s name for the PebblePost-issued brand identifier; the same concept
+    PebblePost''s own guide calls brid.'
+x-evidence:
+  fetched: '2026-08-12'
+  probes:
+  - url: https://docs.pebblepost.com/article/21-performance-dashboard-metrics-glossary
+    status: 200
+  - url: https://docs.tealium.com/client-side-tags/pebblepost-tag/
+    status: 200
+  - url: https://docs.pebblepost.com/article/6-pebblepost-javascript-tag-installation-guide
+    status: 200
+x-gap:
+- 'The glossary defines the metrics but nothing binds them to a machine-readable
+  schema — no field names, no types, no units, no currency. Revenue, AOV, Ad Spend and
+  CPA are all monetary and no currency is stated anywhere.'
+- 'PebblePost''s own tag documentation is a strict subset of what its integration
+  partners document. Two collected fields — `end_url` (Synthetic Endpoint) and `tags`
+  (Customer Tag) — appear in Tealium''s published mapping for the PebblePost tag but
+  in none of PebblePost''s own articles, so a brand reading only PebblePost''s guide
+  does not learn everything the tag can send.'

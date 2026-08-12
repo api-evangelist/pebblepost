@@ -17,7 +17,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.20'
 created: '2026-08-04'
-modified: '2026-08-04'
+modified: '2026-08-12'
 tags:
 - Company
 - Marketing
@@ -94,6 +94,8 @@ common:
   url: https://docs.pebblepost.com/
 - type: Blog
   url: https://www.pebblepost.com/blog/
+- type: BlogRSS
+  url: https://www.pebblepost.com/feed/
 - type: GitHubOrganization
   url: https://github.com/PebblePost
 - type: Login
@@ -116,10 +118,22 @@ common:
   url: https://trust.pebblepost.com/
 - type: TrustCenter
   url: security/pebblepost-trust-center.yml
+- type: Packages
+  url: packages/pebblepost-packages.yml
+- type: Plans
+  url: plans/pebblepost-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/pebblepost-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/pebblepost-lifecycle.yml
+- type: Conventions
+  url: conventions/pebblepost-conventions.yml
+- type: Vocabulary
+  url: vocabulary/pebblepost-metrics-vocabulary.yml
 x-enrichment:
-  date: '2026-08-04'
+  date: '2026-08-12'
   status: enriched
-  artifacts_added: 8
+  artifacts_added: 6
   pass: local-v1
 x-coverage:
   state: gated
@@ -128,8 +142,9 @@ x-coverage:
     api.pbbl.co is an AWS API Gateway that answers every path, including /openapi.json,
     with HTTP 403 "Missing Authentication Token", and the only public docs site
     (docs.pebblepost.com, a Help Scout help center) covers dashboard reporting and
-    creative specs, telling integrators to hand Shopify credentials to "your PebblePost
-    Account Manager" instead of documenting an API.'
+    creative specs, still telling integrators in 2026 to email a Shopify API key and
+    password to "your PebblePost Account Manager" — three years after PebblePost
+    announced a Shopify public app that was supposed to end exactly that practice.'
   evidence:
   - url: https://api.pbbl.co/openapi.json
     status: 403
@@ -137,8 +152,14 @@ x-coverage:
     status: 404
   - url: https://api.pebblepost.com/health
     status: 200
+  - url: https://api.pebblepost.com/graphql
+    status: 404
   - url: https://docs.pebblepost.com/article/36-connect-pebblepost-to-shopify
     status: 200
   - url: https://www.pebblepost.com/.well-known/agent-card.json
     status: 404
-  checked: '2026-08-04'
+  - url: https://www.pebblepost.com/pricing/
+    status: 404
+  - url: https://apps.shopify.com/pebblepost
+    status: 404
+  checked: '2026-08-12'

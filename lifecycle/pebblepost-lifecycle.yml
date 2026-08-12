@@ -1,0 +1,110 @@
+generated: '2026-08-12'
+method: probed
+source: 'probes of the conventional status/changelog/versioning locations plus a full
+  read of https://docs.pebblepost.com/ and the www.pebblepost.com page sitemap'
+# NOTHING IN THE OPERATIONAL LIFECYCLE IS PUBLISHED. No status page, no changelog, no
+# release notes, no versioning policy, no deprecation policy, no SLA. Each was checked
+# individually and each is a recorded negative below. Consequently this file is wired
+# as `Lifecycle` ONLY — it deliberately carries NO `StatusPage` and NO `Deprecation`
+# pointer in apis.yml, because those pointers assert the provider publishes those
+# things and PebblePost does not.
+versioning:
+  policy_published: false
+  scheme: null
+  version_in_path: false
+  version_header: null
+  note: 'No version segment was observed on either live host. api.pebblepost.com
+    answers /health at the root with no version prefix, and /v1 returns the same 404
+    envelope as any other unknown path, so there is no evidence of a /v1 namespace.'
+  evidence:
+  - url: https://api.pebblepost.com/v1
+    status: 404
+  - url: https://api.pebblepost.com/v1/openapi.json
+    status: 404
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: 'No deprecation policy page exists and there is no OpenAPI in which operations
+    could be marked deprecated. No Sunset or Deprecation response header was returned
+    on any probed path.'
+status_page:
+  published: false
+  url: null
+  note: 'CHECKED AND FALSE — and the check is worth recording because the obvious
+    probe LOOKS like a hit. https://pebblepost.statuspage.io/ returns HTTP 200, but it
+    is an unclaimed Statuspage subdomain that redirects to Atlassian''s own Statuspage
+    marketing page (final URL https://www.atlassian.com/software/statuspage, <title>
+    "Real-Time Incident Communication with Statuspage | Atlassian"). It is NOT a
+    PebblePost status page. status.pebblepost.com and status.pbbl.co do not resolve.'
+  evidence:
+  - url: https://pebblepost.statuspage.io/
+    status: 200
+    resolved_to: https://www.atlassian.com/software/statuspage
+    verdict: false-positive
+  - url: https://status.pebblepost.com/
+    status: 000
+    observed: does not resolve
+  - url: https://status.pbbl.co/
+    status: 000
+    observed: does not resolve
+changelog:
+  published: false
+  url: null
+  note: 'No changelog, release-notes or "what''s new" surface. The help center''s four
+    collections (Getting Started, Performance Dashboard Access, Performance Dashboard
+    Reports Help, Reporting Dashboards) contain no dated release article, and the
+    65-page marketing sitemap contains none either. Product news appears only as
+    undated-in-URL blog posts at https://www.pebblepost.com/blog/.'
+  nearest_surface:
+    name: Company blog
+    url: https://www.pebblepost.com/blog/
+    rss: https://www.pebblepost.com/feed/
+    status: 200
+    note: 'Marketing posts, not release notes. Product changes surface here
+      occasionally and without version numbers — e.g. the 2023-06-01 post announcing a
+      Shopify public app.'
+sla:
+  published: false
+  uptime_target: null
+  support_response_target: null
+  note: 'No SLA or uptime commitment on any public page. Terms of service and terms of
+    use are published but are commercial terms, not an availability commitment.'
+  terms:
+  - url: https://www.pebblepost.com/terms-of-service/
+    status: 200
+  - url: https://www.pebblepost.com/terms-of-use/
+    status: 200
+support:
+  channels:
+  - type: help-center
+    url: https://docs.pebblepost.com/
+    status: 200
+  - type: account-manager
+    note: 'The help center routes integration work to "your PebblePost Account
+      Manager" rather than to a support queue or developer forum.'
+  - type: sales-contact
+    url: https://www.pebblepost.com/lets-chat/
+    status: 200
+runtime_observed:
+  hosts:
+  - host: api.pebblepost.com
+    liveness_endpoint: /health
+    status: 200
+    body: '{"status":"UP"}'
+    note: 'The only anonymously reachable route found on this host. A liveness probe
+      is not a status page — it reports one process, publishes no history, no incident
+      record and no component breakdown.'
+  - host: api.pbbl.co
+    status: 403
+    note: AWS API Gateway; every path rejected before routing.
+x-gap:
+- 'PebblePost publishes nothing an operator could use to plan around change: no
+  changelog, no versioning statement, no deprecation policy and no status page. A brand
+  running the tag on its checkout pages has no way to learn that the tag changed, and
+  no page to check when conversions stop arriving.'
+- 'The unclaimed pebblepost.statuspage.io subdomain is a small but real hygiene issue —
+  it resolves and returns 200, so an automated checker (or a customer) can easily
+  mistake it for a status page that PebblePost operates.'

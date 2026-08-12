@@ -1,4 +1,4 @@
-generated: '2026-08-04'
+generated: '2026-08-12'
 method: searched
 source: https://www.pebblepost.com/privacy-policy/
 # Standards and regulatory posture. Nothing here is derived from an OpenAPI — PebblePost
@@ -91,3 +91,45 @@ standards:
   conforms: false
   evidence: No CAA records on pebblepost.com or pbbl.co.
   source: security/pebblepost-domain-security.yml
+# Added 2026-08-12 on re-probe.
+- id: mcp
+  conforms: false
+  evidence: 'No hosted MCP server. mcp.pebblepost.com does not resolve;
+    /.well-known/mcp.json returns 404 on www.pebblepost.com; no MCP endpoint is named
+    in any PebblePost document or in its llms.txt.'
+- id: graphql
+  conforms: false
+  evidence: 'https://api.pebblepost.com/graphql returns the standard 404
+    ResourceNotFoundError envelope. No GraphQL surface on any PebblePost host. (The
+    only GraphQL endpoint in the estate is Vanta''s, on the hosted trust center, and it
+    rejects unsigned requests.)'
+- id: rate-limit-headers
+  conforms: false
+  evidence: 'No X-RateLimit-*, RateLimit-* or Retry-After headers on any response from
+    api.pebblepost.com or api.pbbl.co; no published limit.'
+  source: rate-limits/pebblepost-rate-limits.yml
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset or Deprecation headers observed and no deprecation policy page.
+  source: lifecycle/pebblepost-lifecycle.yml
+- id: status-page
+  conforms: false
+  evidence: 'No status page. pebblepost.statuspage.io is an unclaimed subdomain that
+    redirects to Atlassian''s Statuspage marketing site; status.pebblepost.com and
+    status.pbbl.co do not resolve.'
+  source: lifecycle/pebblepost-lifecycle.yml
+- id: semver-api-versioning
+  conforms: false
+  evidence: 'No version segment in any observed path, no version header, no published
+    versioning policy.'
+  source: lifecycle/pebblepost-lifecycle.yml
+- id: published-sdk
+  conforms: false
+  evidence: 'No first-party client library in npm, PyPI, RubyGems, Packagist or the
+    PebblePost GitHub organization (1 public repo, an internal AWS log utility).'
+  source: packages/pebblepost-packages.yml
+- id: published-pricing
+  conforms: false
+  evidence: 'No pricing page. The 65-page marketing sitemap contains none and
+    /pricing/ returns 404; commercial terms are quote-only.'
+  source: plans/pebblepost-plans-pricing.yml

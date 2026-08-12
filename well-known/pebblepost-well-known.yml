@@ -1,10 +1,13 @@
-generated: '2026-08-04'
+generated: '2026-08-12'
 method: probed
 source: live GET of /.well-known/* on every PebblePost host
-# NO HITS. Every /.well-known/ path returned 404 on every host probed. This file is
-# the honest negative record so a later round does not re-walk the same ground; it is
-# deliberately NOT wired as a `WellKnown` pointer in apis.yml, because there is no
-# well-known catalog to point at.
+# NO HITS. Every /.well-known/ path returned 404 on every host PebblePost actually
+# controls. This file is the honest negative record so a later round does not re-walk
+# the same ground; it is deliberately NOT wired as a `WellKnown` pointer in apis.yml,
+# because there is no well-known catalog to point at.
+# 2026-08-12 re-probe: unchanged. Added the trust.pebblepost.com host, which is the
+# ONE place this probe can produce a false positive — see false_positives below.
+last_probed: '2026-08-12'
 hosts:
 - host: https://www.pebblepost.com
   documents:
@@ -15,8 +18,11 @@ hosts:
   - {path: /.well-known/ai-plugin.json, status: 404}
   - {path: /.well-known/agent-card.json, status: 404}
   - {path: /.well-known/agent.json, status: 404}
+  - {path: /.well-known/mcp.json, status: 404}
+  - {path: /security.txt, status: 404}
   - {path: /llms.txt, status: 200, file: ../llms/pebblepost-llms.txt}
   - {path: /robots.txt, status: 200}
+  - {path: /sitemap.xml, status: 200}
 - host: https://api.pebblepost.com
   documents:
   - {path: /.well-known/security.txt, status: 404}
@@ -29,17 +35,82 @@ hosts:
   - {path: /.well-known/security.txt, status: 404}
   - {path: /.well-known/agent-card.json, status: 404}
   - {path: /.well-known/agent.json, status: 404}
+- host: https://docs.pebblepost.com
+  documents:
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /llms.txt, status: 404}
 - host: https://api.pbbl.co
   documents:
   - {path: /.well-known/agent-card.json, status: 403, note: AWS API Gateway returns
       "Missing Authentication Token" for every path}
+false_positives:
+- host: https://trust.pebblepost.com
+  vendor: Vanta Trust Center
+  observed_status: 200
+  verdict: NOT-A-HIT
+  detail: 'The Vanta-hosted trust center is a single-page app with a catch-all route:
+    EVERY path returns HTTP 200 with content-type text/html and the identical Vanta
+    app shell. /security.txt, /.well-known/security.txt and /.well-known/agent-card.json
+    all "succeed", and so does a deliberately nonsense control path. None of them is a
+    document. Recorded here explicitly so a future round does not credit PebblePost
+    with a security.txt or an agent card it does not serve.'
+  probes:
+  - {path: /security.txt, status: 200, content_type: text/html}
+  - {path: /.well-known/security.txt, status: 200, content_type: text/html}
+  - {path: /.well-known/agent-card.json, status: 200, content_type: text/html}
+  - {path: /definitely-not-a-real-path-xyz123, status: 200, content_type: text/html,
+     note: 'control probe — proves the 200 is a catch-all, not a document'}
+- host: https://pebblepost.statuspage.io
+  observed_status: 200
+  verdict: NOT-A-HIT
+  detail: 'Unclaimed Statuspage subdomain that redirects to Atlassian''s own Statuspage
+    marketing page. Not a PebblePost status page. Recorded in
+    lifecycle/pebblepost-lifecycle.yml.'
+other_machine_readable_surfaces:
+- host: https://www.pebblepost.com
+  path: /wp-json/
+  status: 200
+  type: wordpress-rest-index
+  detail: 'The marketing site is WordPress and its REST discovery document is publicly
+    readable: 242 routes across 11 namespaces, self-describing with per-route methods
+    and args. NINE of the eleven namespaces are stock WordPress or vendor plugins
+    (wp/v2, oembed/1.0, yoast/v1, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1,
+    duplicate-post/v1, regenerate-thumbnails/v1, wp-site-health/v1, wp-block-editor/v1,
+    wp-abilities/v1). ONE is first-party: `pp-rc/v1`, exposing POST
+    /wp-json/pp-rc/v1/create-run, which backs the public ROI calculator at
+    https://www.pebblepost.com/roi-calculator/.'
+  first_party_namespace:
+    namespace: pp-rc/v1
+    routes:
+    - {method: GET, path: /wp-json/pp-rc/v1, description: namespace index}
+    - {method: POST, path: /wp-json/pp-rc/v1/create-run, args_declared: none,
+       description: 'backs the ROI calculator; declares no arguments in the REST index'}
+  verdict: NOT-THE-PRODUCT-API
+  note: 'Recorded for completeness and NOT wired as an API entry in apis.yml. This is
+    the content-management layer of a WordPress marketing site plus one lead-capture
+    plugin route — it is not the PebblePost platform API, it is not documented, and
+    presenting it as PebblePost''s API would misrepresent the company. It is noted
+    because it is, ironically, the only self-describing machine-readable HTTP
+    interface PebblePost serves anonymously.'
+- host: https://www.pebblepost.com
+  path: /feed/
+  status: 200
+  type: rss
+  detail: WordPress RSS feed for the company blog.
 summary:
   hits: 0
   security_txt: false
   openid_configuration: false
+  oauth_authorization_server: false
   api_catalog: false
   agent_card: false
+  ai_plugin: false
+  llms_txt: true
 x-gap:
-  - PebblePost publishes no /.well-known/security.txt (RFC 9116). A security researcher
-    has no machine-discoverable contact or disclosure policy; the only published address
-    is privacy@pebblepost.com in the privacy policy.
+- 'PebblePost publishes no /.well-known/security.txt (RFC 9116). A security researcher
+  has no machine-discoverable contact or disclosure policy; the only published address
+  is privacy@pebblepost.com in the privacy policy.'
+- 'The Vanta trust center answers 200 on every path including /.well-known/*, which
+  means automated posture checkers can be fooled into recording documents PebblePost
+  does not serve. Serving a real security.txt on www.pebblepost.com would both close
+  the RFC 9116 gap and remove the ambiguity.'
