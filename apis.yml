@@ -12,6 +12,17 @@ description: 'PebblePost is a New York-based commerce marketing platform that pi
   no public developer portal, API reference, OpenAPI definition or self-serve API keys
   — API access is arranged through a PebblePost account team.'
 url: https://raw.githubusercontent.com/api-evangelist/pebblepost/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.pebblepost.com/wp-content/themes/pebblepost/assets/static/img/logo.svg
 x-type: company
 x-source: harvest:secondary-market
