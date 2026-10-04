@@ -10,10 +10,7 @@
     },
     {
       "source": "https://docs.pebblepost.com/",
-      "feed_url": "https://docs.pebblepost.com/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "error": "URLError"
     },
     {
       "source": "https://www.pebblepost.com/blog/feed/",
@@ -30,6 +27,6 @@
       "method": "feed"
     }
   ],
-  "post_count": 7,
-  "fetched": "2026-09-19T20:17:39Z"
+  "post_count": 8,
+  "fetched": "2026-10-03T12:30:02Z"
 }
