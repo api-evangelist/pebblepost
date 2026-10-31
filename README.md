@@ -64,5 +64,112 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-PebblePost is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/pebblepost_stock/
+PebblePost is a New York-based commerce marketing platform that pioneered Programmatic Direct Mail (PDM) and now also operates a Performance CTV product. Its Performance Marketing Engine turns first-party website intent signals, household identity and transaction data — surfaced through the PebblePost Graph — into targeted physical mail and connected-TV campaigns for retail and direct-to-consumer brands, with conversion measurement reported through a Performance Dashboard. Brands integrate by installing the PebblePost JavaScript tag (a window._pp client-side collector served from cdn.pbbl.co) and by syncing commerce data through connectors such as Shopify. Live API hosts run at api.pebblepost.com and api.pbbl.co, but PebblePost publishes no public developer portal, API reference, OpenAPI definition or self-serve API keys — API access is arranged through a PebblePost account team.
+
+**Areas:** Company · Marketing · Advertising · Direct Mail · Connected TV · Retail · Commerce · Identity · Analytics
+
+## PebblePost on APIs.io
+
+Everything profiled for PebblePost is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/pebblepost/](https://apis.io/providers/pebblepost/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [PebblePost JavaScript Tag](https://apis.io/apis/pebblepost/pebblepost-javascript-tag/) — The PebblePost JavaScript tag is the provider's public client-side integration surface. Brands drop a script on their site that populates a window._pp array…
+- [PebblePost Platform API](https://apis.io/apis/pebblepost/pebblepost-platform-api/) — A live but publicly undocumented platform API surface behind the PebblePost PDM Manager application. Two hosts respond: api.pebblepost.com (an Express…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [PebblePost Performance Vocabulary](https://apis.io/vocabularies/pebblepost/pebblepost-metrics-vocabulary/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Pebblepost Authentication](https://apis.io/security/pebblepost/pebblepost-authentication/)
+- [Pebblepost Domain Security](https://apis.io/security/pebblepost/pebblepost-domain-security/)
+- [Pebblepost Trust Center](https://apis.io/security/pebblepost/pebblepost-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Pebblepost Plans Pricing](https://apis.io/plans/pebblepost/pebblepost-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Pebblepost Rate Limits](https://apis.io/rate-limits/pebblepost/pebblepost-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.pebblepost.com/)
+- [Documentation](https://docs.pebblepost.com/)
+- [Getting started](https://docs.pebblepost.com/collection/1-getting-started)
+- [Support](https://docs.pebblepost.com/)
+- [Blog](https://www.pebblepost.com/blog/)
+- [Compliance](https://trust.pebblepost.com/)
+- [Terms of service](https://www.pebblepost.com/terms-of-use/)
+- [Privacy policy](https://www.pebblepost.com/privacy-policy/)
+- [GitHub](https://github.com/PebblePost)
+
+## API Evangelist rating
+
+**Kin Score 30.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 33.3 |
+| Operational transparency | 2.6 |
+| Developer ergonomics | 40.5 |
+| Access clarity | 43.4 |
+
+**Agent readiness 7.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/pebblepost/](https://apis.io/providers/pebblepost/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for PebblePost: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/pebblepost/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
